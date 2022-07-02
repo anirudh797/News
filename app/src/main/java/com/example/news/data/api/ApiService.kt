@@ -1,6 +1,7 @@
 package com.example.news.data.api
 
 import com.example.news.data.model.News
+import com.example.news.data.model.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -26,4 +27,5 @@ object RetrofitBuilder {
             .build()
     }
 
+    val apiService = getRetrofit().create(ApiService::class.java)
 }

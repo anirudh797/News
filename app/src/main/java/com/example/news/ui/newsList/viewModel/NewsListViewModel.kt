@@ -32,7 +32,7 @@ class NewsListViewModel(private val repository: NewsListRepository ) : ViewModel
     }
 
 
-    private fun getNews() : LiveData<Resource<List<News>>>{
+     fun getNews() : LiveData<Resource<List<News>>>{
         return newsList
     }
 

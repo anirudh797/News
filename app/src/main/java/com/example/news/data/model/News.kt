@@ -22,3 +22,15 @@ data class News(
 ){
 
 }
+
+data class Response(
+
+    @SerializedName("status")
+    var status: String ="",
+
+    @SerializedName("articles")
+    var articles : List<News>
+
+
+){}
+

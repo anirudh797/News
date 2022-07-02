@@ -1,17 +1,19 @@
 package com.example.news.ui.newsList.adapter
 
 import android.content.ClipData
+import android.net.Uri
 import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.news.R
 import com.example.news.data.model.News
 import com.example.news.databinding.ItemLayoutBinding
 
-class NewsListAdapter(private val newsList : ArrayList<News>) :
+class NewsListAdapter(private var newsList : List<News>) :
     RecyclerView.Adapter<NewsListAdapter.DataViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
@@ -31,7 +33,6 @@ class NewsListAdapter(private val newsList : ArrayList<News>) :
     class DataViewHolder(val binding : ItemLayoutBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(news : News){
-
             with(binding) {
                 tvDesc.text = news.description
                 tvHeading.text = news.title
@@ -39,7 +40,16 @@ class NewsListAdapter(private val newsList : ArrayList<News>) :
                 Glide.with(binding.root).load(news.imageUrl).into(
                     iv
                 )
+                itemView.setOnClickListener {
+                    val builder = CustomTabsIntent.Builder()
+                    val customTabsIntent = builder.build()
+                    customTabsIntent.launchUrl(it.context, Uri.parse(news.url))
+                }
             }
         }
+    }
+
+    fun addData(list: List<News>){
+        newsList.toMutableList().addAll(list)
     }
 }
