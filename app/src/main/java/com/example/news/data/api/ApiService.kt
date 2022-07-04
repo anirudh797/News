@@ -19,7 +19,7 @@ interface ApiService {
 
 object RetrofitBuilder {
 
-    private const val BASE_URL = "https://demo9376629.mockable.io/"
+    private const val BASE_URL = "https://demo8522217.mockable.io/"
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder().baseUrl(BASE_URL)

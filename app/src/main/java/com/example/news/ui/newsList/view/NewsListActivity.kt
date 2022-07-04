@@ -18,11 +18,13 @@ import com.example.news.databinding.ActivityNewsListBinding
 import com.example.news.ui.base.ViewModelFactory
 import com.example.news.ui.newsList.adapter.NewsListAdapter
 import com.example.news.ui.newsList.viewModel.NewsListViewModel
+import com.example.news.ui.newsList.viewModel.SeriesNewsListViewModel
 import com.example.news.utils.Status
 
 class NewsListActivity : AppCompatActivity() {
 
     private lateinit var newsListViewModel: NewsListViewModel
+    private lateinit var seriesNewsListViewModel: SeriesNewsListViewModel
     private lateinit var adapter: NewsListAdapter
     lateinit var binding : ActivityNewsListBinding
 
@@ -55,7 +57,7 @@ class NewsListActivity : AppCompatActivity() {
 
     fun setupObserver(){
 
-        newsListViewModel.getNews().observe(this) {
+        seriesNewsListViewModel.getNews().observe(this) {
             when (it.status) {
                     Status.SUCCESS -> {
                         binding.pb.visibility = View.GONE
@@ -81,13 +83,12 @@ class NewsListActivity : AppCompatActivity() {
 
     private fun renderList(newsList : List<News>){
         adapter.addData(newsList)
-        adapter.notifyDataSetChanged()
 
     }
 
     private fun setupViewModel(){
-        newsListViewModel = ViewModelProviders.of(this,ViewModelFactory(ApiHelperImpl(
+        seriesNewsListViewModel = ViewModelProviders.of(this,ViewModelFactory(ApiHelperImpl(
             RetrofitBuilder.apiService
-        ))).get(NewsListViewModel::class.java)
+        ))).get(SeriesNewsListViewModel::class.java)
     }
 }

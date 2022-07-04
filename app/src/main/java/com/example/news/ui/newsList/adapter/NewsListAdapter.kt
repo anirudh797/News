@@ -13,7 +13,7 @@ import com.example.news.R
 import com.example.news.data.model.News
 import com.example.news.databinding.ItemLayoutBinding
 
-class NewsListAdapter(private var newsList : List<News>) :
+class NewsListAdapter(private var newsList : MutableList<News>) :
     RecyclerView.Adapter<NewsListAdapter.DataViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
@@ -50,6 +50,8 @@ class NewsListAdapter(private var newsList : List<News>) :
     }
 
     fun addData(list: List<News>){
-        newsList.toMutableList().addAll(list)
+        newsList.clear()
+        newsList.addAll(list)
+        this.notifyDataSetChanged()
     }
 }
