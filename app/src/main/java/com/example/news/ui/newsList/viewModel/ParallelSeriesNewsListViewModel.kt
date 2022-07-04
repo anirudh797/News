@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.news.data.model.News
 import com.example.news.data.repository.NewsListRepository
 import com.example.news.utils.Resource
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class ParallelSeriesNewsListViewModel(private val repository: NewsListRepository ) : ViewModel() {
@@ -20,14 +22,15 @@ class ParallelSeriesNewsListViewModel(private val repository: NewsListRepository
     private fun fetchNews(){
     viewModelScope.launch{
         newsList.postValue(Resource.loading(null))
-        try{
-        val response = repository.getNews()
-        val moreResponse = repository.getMoreNews()
-        val allResponse = mutableListOf<News>()
-            allResponse.addAll(response)
-            allResponse.addAll(moreResponse)
-
-        newsList.postValue(Resource.success(allResponse))
+        try {
+            coroutineScope {
+                val response = async { repository.getNews() }
+                val moreResponse = async { repository.getMoreNews() }
+                val allResponse = mutableListOf<News>()
+                allResponse.addAll(response.await())
+                allResponse.addAll(moreResponse.await())
+                newsList.postValue(Resource.success(allResponse))
+            }
         }
         catch (e : Exception){
             newsList.postValue(Resource.error(null,e.toString()))
